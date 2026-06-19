@@ -1,6 +1,12 @@
 (function (global) {
   'use strict';
 
+  /*
+   * Canonical implementation.
+   * Keep runtime behavior, markup, and scoped styles in this file unless a
+   * build step is introduced later.
+   */
+
   const VERSION = '0.1.0';
   const STYLE_ID = 'mascot-widget-styles';
 

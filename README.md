@@ -119,6 +119,7 @@ For example, the mascot should be able to remain in `thinking` while briefly per
 ## Current State
 
 - `mascot-widget.js` is the first embeddable widget build. It injects the mascot markup, scoped styles, and behavior from one script.
+- `mascot-widget.js` is the canonical implementation until this project introduces a build step.
 - `mascot.html` is now the main integration demo. It mounts the widget and controls it through the public API.
 - `src/mascot.css` and `src/mascot.js` remain as the split prototype/reference implementation.
 - `examples/original.html` preserves the original self-contained prototype.
@@ -127,8 +128,8 @@ For example, the mascot should be able to remain in `thinking` while briefly per
 ## Suggested Milestones
 
 1. Keep `examples/original.html` as the untouched visual reference.
-2. Use `mascot.html`, `src/mascot.css`, and `src/mascot.js` as the working split prototype.
-3. Maintain `mascot-widget.js` as the embeddable single-file widget.
+2. Maintain `mascot-widget.js` as the embeddable single-file widget and source of truth.
+3. Keep demos and examples as consumers or historical references.
 4. Harden the minimal public API: `mount`, `setMood`, `say`, `wave`, `jump`, `show`, `hide`, `destroy`.
 5. Add configuration options for position, initial mood, welcome message, and size.
 6. Add a second demo HTML that shows integration into an arbitrary host page.

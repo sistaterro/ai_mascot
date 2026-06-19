@@ -22,6 +22,8 @@ The user likes the direction of making this a reusable widget rather than a stan
 
 Prefer a small, dependency-free browser widget.
 
+`mascot-widget.js` is the canonical implementation. Do not change behavior in a separate prototype file unless the same behavior is also changed in the widget, or unless a generation workflow is added first.
+
 The target usage should be close to:
 
 ```html
@@ -91,7 +93,7 @@ Actions should not permanently overwrite the current mood. For example, `jump()`
 2. Keep the widget API intentionally small.
 3. Add configuration options for size, initial mood, welcome behavior, and placement.
 4. Add a second demo page that shows the widget inside an arbitrary host layout.
-5. Consider whether to generate `mascot-widget.js` from `src/` or make the widget the source of truth.
+5. Consider adding a generation workflow only if the single-file widget becomes hard to maintain manually.
 
 ## Coding Preferences
 
