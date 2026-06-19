@@ -97,14 +97,14 @@
     document.querySelector('[data-action="say"]').addEventListener('click', () => {
       mascot
         .setMood('listening', { silent: true })
-        .say('Ahora sí: esta burbuja viene desde la API pública.', { duration: 4200 });
+        .say('Now this bubble comes from the public API.', { duration: 4200 });
     });
     document.querySelector('[data-action="hide"]').addEventListener('click', () => mascot.hide());
     document.querySelector('[data-action="show"]').addEventListener('click', () => {
       mascot
         .show()
         .setMood('happy', { silent: true })
-        .say('Volví 👋', { duration: 1800 })
+        .say('I am back 👋', { duration: 1800 })
         .wave();
     });
   </script>

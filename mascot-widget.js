@@ -7,7 +7,7 @@
   const TEMPLATE = `<div class="mascot-widget__stage">
 
   <!-- Speech bubble -->
-  <div class="mascot-widget__bubble" id="bubble">¡Hola! 👋</div>
+  <div class="mascot-widget__bubble" id="bubble">Hello! 👋</div>
 
   <!-- ── SVG MASCOT ─────────────────────────────────────── -->
   <svg id="mascot-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
@@ -15,12 +15,12 @@
     <!-- SHADOW -->
     <ellipse id="shadow" cx="110" cy="214" rx="44" ry="9" fill="#334155"/>
 
-    <!-- BODY GROUP — todo lo que bouncea -->
+    <!-- BODY GROUP — everything that bounces -->
     <g id="body-group">
 
-      <!-- ── EARS (debajo del cuerpo para que queden atrás) -->
+      <!-- ── EARS (behind the body) -->
       <g id="ear-left">
-        <!-- oreja izquierda: punta redondeada -->
+        <!-- left ear: rounded tip -->
         <ellipse cx="71" cy="68" rx="18" ry="24" fill="#FF6B35" transform="rotate(-10 71 68)"/>
         <ellipse cx="71" cy="70" rx="11" ry="16" fill="#FF8C5A" transform="rotate(-10 71 70)"/>
       </g>
@@ -30,16 +30,16 @@
       </g>
 
       <!-- ── ARMS ──────────────────────────────────────── -->
-      <!-- Brazo izq — origen de rotación en 72,138 -->
+      <!-- Left arm -- rotation origin at 72,138 -->
       <g id="arm-left">
         <ellipse cx="72" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(-20 72 148)"/>
-        <!-- manito -->
+        <!-- small hand -->
         <circle cx="62" cy="155" r="9" fill="#FF6B35"/>
         <circle cx="56" cy="151" r="5" fill="#FF8C5A"/>
         <circle cx="55" cy="158" r="5" fill="#FF8C5A"/>
         <circle cx="61" cy="162" r="5" fill="#FF8C5A"/>
       </g>
-      <!-- Brazo der -->
+      <!-- Right arm -->
       <g id="arm-right">
         <ellipse cx="148" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(20 148 148)"/>
         <circle cx="158" cy="155" r="9" fill="#FF6B35"/>
@@ -48,7 +48,7 @@
         <circle cx="159" cy="162" r="5" fill="#FF8C5A"/>
       </g>
 
-      <!-- ── BODY (cuerpo principal) ────────────────────── -->
+      <!-- ── BODY (main body) ────────────────────── -->
       <ellipse cx="110" cy="158" rx="52" ry="48" fill="#FF6B35"/>
 
       <!-- ── HEAD ──────────────────────────────────────── -->
@@ -63,16 +63,16 @@
 
       <!-- ── EYE LEFT ───────────────────────────────────── -->
       <g id="eye-l">
-        <!-- blanco del ojo -->
+        <!-- eye white -->
         <ellipse cx="88"  cy="105" rx="18" ry="20" fill="white"/>
-        <!-- pupila -->
+        <!-- pupil -->
         <g id="pupil-l">
           <circle cx="88" cy="106" r="11" fill="#1E293B"/>
           <!-- brillo -->
           <circle cx="93" cy="101" r="4"  fill="white"/>
           <circle cx="84" cy="109" r="2"  fill="white" opacity=".5"/>
         </g>
-        <!-- párpado — cubre el ojo al parpadear -->
+        <!-- eyelid -- covers the eye while blinking -->
         <g id="blink-l" style="transform-origin: 88px 96px;">
           <ellipse cx="88" cy="105" rx="18.5" ry="20.5" fill="#FF6B35"/>
         </g>
@@ -94,7 +94,7 @@
       <!-- ── NOSE ───────────────────────────────────────── -->
       <ellipse cx="110" cy="120" rx="6" ry="4" fill="#CC4400" opacity=".4"/>
 
-      <!-- ── MOUTHS (uno visible a la vez) ─────────────── -->
+      <!-- ── MOUTHS (one visible at a time) ─────────────── -->
       <!-- happy (default) -->
       <path id="mouth-happy" class="mouth-path active"
             d="M 93 132 Q 110 148 127 132"
@@ -137,9 +137,9 @@
 
       <!-- ── HALF-CLOSED EYES for sleepy ───────────────── -->
       <g id="sleepy-lids" style="opacity:0; transition: opacity .3s; pointer-events:none;">
-        <!-- tapa mitad superior del ojo izq -->
+        <!-- cover upper half of the left eye -->
         <rect x="70" y="86" width="36" height="18" fill="#FF6B35" rx="2"/>
-        <!-- tapa mitad superior del ojo der -->
+        <!-- cover upper half of the right eye -->
         <rect x="114" y="86" width="36" height="18" fill="#FF6B35" rx="2"/>
       </g>
 
@@ -168,7 +168,7 @@
     overflow: visible;
   }
 
-  /* ── IDLE BOUNCE (cuerpo completo) ───────────────────── */
+  /* ── IDLE BOUNCE (full body) ───────────────────── */
 .mascot-widget #body-group {
     animation: mascot-idle-bounce 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
     transform-origin: 110px 200px;
@@ -181,7 +181,7 @@
     85%      { transform: translateY(2px)    scaleY(.95)  scaleX(1.03); }
   }
 
-  /* Cuando está en jump la animación se pausa y JS toma el control */
+  /* When jumping, the animation pauses and JS takes control */
 .mascot-widget #body-group.jumping {
     animation: none;
   }
@@ -418,14 +418,14 @@
 
   const DEFAULT_MOOD = 'happy';
   const BUBBLE_TEXTS = {
-    happy: '\u00a1Hola! \ud83d\ude0a',
-    sad: 'Me da tristeza... \ud83d\ude22',
-    excited: '\u00a1WOOOO! \ud83c\udf89',
+    happy: 'Hello! \ud83d\ude0a',
+    sad: 'I am sad... \ud83d\ude22',
+    excited: 'WOOOO! \ud83c\udf89',
     sleepy: 'zzz... \ud83d\ude34',
-    thinking: 'Pensando...',
-    listening: 'Te escucho',
-    success: '\u00a1Listo!',
-    error: 'Ups, algo pas\u00f3',
+    thinking: 'Thinking...',
+    listening: 'I am listening',
+    success: 'Done!',
+    error: 'Oops, something happened',
   };
 
   const CHEEK_COLORS = {
@@ -496,7 +496,7 @@
       this.scheduleBlink(1200 + Math.random() * 1200);
 
       if (options.welcome !== false) {
-        this.setManagedTimeout(() => this.say(BUBBLE_TEXTS[this.currentMood] || '\u00a1Hola! \ud83d\ude0a'), 500);
+        this.setManagedTimeout(() => this.say(BUBBLE_TEXTS[this.currentMood] || 'Hello! \ud83d\ude0a'), 500);
       }
     }
 
@@ -607,7 +607,7 @@
       void this.armR.offsetWidth;
       this.armL.classList.add('waving');
       this.armR.classList.add('waving');
-      this.say('\u00a1Hola! \ud83d\udc4b');
+      this.say('Hello! \ud83d\udc4b');
 
       this.setManagedTimeout(() => {
         this.armL.classList.remove('waving');
@@ -624,7 +624,7 @@
       this.showMouth('surprised');
       this.bodyGroup.classList.add('jumping', 'jump-anim');
       this.shadow.classList.add('jumping', 'shadow-jump');
-      this.say('\u00a1Wee! \ud83d\ude80');
+      this.say('Wee! \ud83d\ude80');
 
       this.setManagedTimeout(() => {
         this.bodyGroup.classList.remove('jumping', 'jump-anim');

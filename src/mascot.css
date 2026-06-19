@@ -31,7 +31,7 @@
     overflow: visible;
   }
 
-  /* ── IDLE BOUNCE (cuerpo completo) ───────────────────── */
+  /* ── IDLE BOUNCE (full body) ───────────────────── */
   #body-group {
     animation: idle-bounce 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
     transform-origin: 110px 200px;
@@ -44,7 +44,7 @@
     85%      { transform: translateY(2px)    scaleY(.95)  scaleX(1.03); }
   }
 
-  /* Cuando está en jump la animación se pausa y JS toma el control */
+  /* When jumping, the animation pauses and JS takes control */
   #body-group.jumping {
     animation: none;
   }

@@ -32,15 +32,15 @@
   function showMouth(name) {
     Object.keys(mouths).forEach(k => mouths[k].classList.remove('active'));
     if (mouths[name]) mouths[name].classList.add('active');
-    // teeth acompañan a excited
+    // teeth follow excited state
     teethLine.classList.toggle('active', name === 'excited');
   }
 
   /* ─── SET STATE ──────────────────────────────────────────── */
   const bubbleTexts = {
-    happy:    '¡Hola! 😊',
-    sad:      'Me da tristeza... 😢',
-    excited:  '¡WOOOO! 🎉',
+    happy:    'Hello! 😊',
+    sad:      'I am sad... 😢',
+    excited:  'WOOOO! 🎉',
     sleepy:   'zzz... 😴',
   };
 
@@ -85,26 +85,26 @@
 
   /* ─── BLINK ──────────────────────────────────────────────── */
   function doBlink() {
-    if (currentState === 'sleepy') return; // ya tiene ojos semi-cerrados
+    if (currentState === 'sleepy') return; // it already has half-closed eyes
     svg.classList.add('blinking');
     setTimeout(() => svg.classList.remove('blinking'), 130);
-    // siguiente parpadeo aleatorio
+    // next random blink
     setTimeout(doBlink, 2000 + Math.random() * 3500);
   }
   // Arrancar con delay inicial
   setTimeout(doBlink, 1200 + Math.random() * 1200);
 
   /* ─── PUPILS SIGUEN EL CURSOR ────────────────────────────── */
-  // Centros de los ojos en coordenadas del viewBox (0 0 220 220)
+  // Eye centers in viewBox coordinates (0 0 220 220)
   const eyeCenters = {
     l: { x: 88, y: 105 },
     r: { x: 132, y: 105 },
   };
-  const MAX_OFFSET = 4; // px máx en el viewBox
+  const MAX_OFFSET = 4; // max px in the viewBox
 
   document.addEventListener('mousemove', e => {
     const rect  = svg.getBoundingClientRect();
-    // ratio de posición del cursor relativo al SVG
+    // cursor position ratio relative to the SVG
     const rx    = (e.clientX - rect.left)  / rect.width;
     const ry    = (e.clientY - rect.top)   / rect.height;
     // convertir a coords del viewBox
@@ -124,7 +124,7 @@
     });
   });
 
-  // Resetear cuando el cursor sale de la ventana
+  // Reset when the cursor leaves the window
   document.addEventListener('mouseleave', () => {
     pupilL.setAttribute('transform', 'translate(0,0)');
     pupilR.setAttribute('transform', 'translate(0,0)');
@@ -134,11 +134,11 @@
   function doWave() {
     armL.classList.remove('waving');
     armR.classList.remove('waving');
-    void armL.offsetWidth; // reflow para reiniciar animación
+    void armL.offsetWidth; // reflow to restart animation
     void armR.offsetWidth;
     armL.classList.add('waving');
     armR.classList.add('waving');
-    showBubble('¡Hola! 👋');
+    showBubble('Hello! 👋');
     setTimeout(() => {
       armL.classList.remove('waving');
       armR.classList.remove('waving');
@@ -150,7 +150,7 @@
     if (isJumping) return;
     isJumping = true;
 
-    // Guardar estado actual de boca y cambiar a surprised
+    // Save current mouth state and switch to surprised
     const prev = currentState;
     showMouth('surprised');
 
@@ -163,20 +163,20 @@
     setTimeout(() => {
       bodyGrp.classList.remove('jumping', 'jump-anim');
       shadow.classList.remove('jumping', 'shadow-jump');
-      // Restaurar boca
+      // Restore mouth
       showMouth(prev);
       isJumping = false;
     }, 580);
 
-    showBubble('¡Wee! 🚀');
+    showBubble('Wee! 🚀');
   }
 
-  /* ─── CLICK en la mascota ────────────────────────────────── */
+  /* ─── CLICK on the mascot ────────────────────────────────── */
   svg.addEventListener('click', () => {
     if (!isJumping) doJump();
   });
 
   /* ─── INIT ───────────────────────────────────────────────── */
   showMouth('happy');
-  // Burbuja de bienvenida
-  setTimeout(() => showBubble('¡Hola! 😊'), 500);
+  // Welcome bubble
+  setTimeout(() => showBubble('Hello! 😊'), 500);

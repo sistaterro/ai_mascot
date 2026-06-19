@@ -29,7 +29,7 @@ The target usage should be close to:
 <script src="mascot-widget.js"></script>
 <script>
   const mascot = MascotWidget.mount("#mascot");
-  mascot.say("Hola");
+  mascot.say("Hello");
   mascot.setMood("happy");
 </script>
 ```
@@ -98,6 +98,7 @@ Actions should not permanently overwrite the current mood. For example, `jump()`
 - Use plain JavaScript, HTML, CSS, and SVG.
 - Avoid dependencies unless the user explicitly asks for them.
 - Keep the widget easy to embed in static pages.
+- Keep every repository word in English. This includes UI text, examples, comments, docs, commit-facing messages, and preserved prototypes.
 - Avoid leaking generic CSS into the host page. Scope selectors under a widget root class.
 - Avoid requiring build tools for the initial version.
 - Prefer readable code over clever minification.

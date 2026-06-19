@@ -6,6 +6,44 @@ AI Mascot is a tiny embeddable web mascot project. The goal is to turn the curre
 
 This project should behave like a reusable widget, not like a standalone page. A host page should be able to load one script, mount the mascot, and control it without knowing anything about the internal SVG, CSS classes, or animation details.
 
+## Add The Widget To Any HTML
+
+1. Copy `mascot-widget.js` into your project.
+2. Add an empty element where the mascot should appear.
+3. Load the widget script.
+4. Mount the widget and keep the returned controller.
+
+```html
+<div id="mascot"></div>
+
+<script src="mascot-widget.js"></script>
+<script>
+  const mascot = MascotWidget.mount("#mascot", {
+    mood: "happy",
+    welcome: true,
+  });
+
+  mascot.say("Hello from my page");
+  mascot.wave();
+</script>
+```
+
+The controller can be called from any page interaction:
+
+```html
+<button id="help-button">Need help?</button>
+
+<script>
+  document.querySelector("#help-button").addEventListener("click", () => {
+    mascot
+      .setMood("listening", { silent: true })
+      .say("I am listening", { duration: 3000 });
+  });
+</script>
+```
+
+The widget injects its own markup and styles, so the host page only needs the container and `mascot-widget.js`.
+
 Target integration:
 
 ```html
@@ -14,7 +52,7 @@ Target integration:
 <script>
   const mascot = MascotWidget.mount("#mascot");
 
-  mascot.say("Hola, soy tu asistente");
+  mascot.say("Hello, I am your assistant");
   mascot.setMood("happy");
   mascot.wave();
 </script>
@@ -30,7 +68,7 @@ const mascot = MascotWidget.mount("#mascot", {
 });
 
 mascot.setMood("happy");
-mascot.say("Procesando...", { duration: 3000 });
+mascot.say("Processing...", { duration: 3000 });
 mascot.clearSpeech();
 mascot.wave();
 mascot.jump();
