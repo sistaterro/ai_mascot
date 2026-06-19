@@ -10,7 +10,10 @@ The user likes the direction of making this a reusable widget rather than a stan
 
 ## Current Files
 
-- `mascot.html`: current self-contained prototype. It includes the full SVG mascot, styles, controls, and inline JavaScript.
+- `mascot.html`: main working demo. It includes the current mascot markup and imports separated CSS and JS.
+- `src/mascot.css`: current styles and animation rules extracted from the original prototype.
+- `src/mascot.js`: current behavior extracted from the original prototype. It still uses global functions and direct DOM IDs.
+- `examples/original.html`: preserved copy of the original self-contained prototype.
 - `README.md`: human-facing project overview and planned API.
 - `AGENTS.md`: this handoff file.
 
@@ -84,10 +87,11 @@ Actions should not permanently overwrite the current mood. For example, `jump()`
 ## Near-Term Task List
 
 1. Add `mascot-widget.js`.
-2. Move the current SVG, CSS, and JS behavior from `mascot.html` into the widget.
+2. Move the split SVG, CSS, and JS behavior into the widget.
 3. Have the widget inject a scoped root element and styles.
-4. Update `mascot.html` so it becomes a demo page that imports and controls the widget.
-5. Keep the first widget API intentionally small.
+4. Replace page-level global functions with a controller instance.
+5. Update `mascot.html` so it becomes a demo page that imports and controls the widget.
+6. Keep the first widget API intentionally small.
 
 ## Coding Preferences
 
@@ -101,4 +105,3 @@ Actions should not permanently overwrite the current mood. For example, `jump()`
 ## Git Notes
 
 This repository was initialized after the original prototype already existed. Be careful not to discard user changes. If the working tree is dirty, inspect changes before editing.
-
