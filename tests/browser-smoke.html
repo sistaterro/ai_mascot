@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Mascot Browser Smoke Test</title>
+<style>
+  body {
+    margin: 0;
+    padding: 32px;
+    background: #F8FAFC;
+    color: #0F172A;
+    font-family: system-ui, sans-serif;
+  }
+
+  main {
+    display: grid;
+    gap: 24px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  .mounts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: center;
+  }
+
+  pre {
+    min-height: 180px;
+    margin: 0;
+    padding: 16px;
+    overflow: auto;
+    border-radius: 8px;
+    background: #0F172A;
+    color: #E2E8F0;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <main>
+    <h1>AI Mascot Browser Smoke Test</h1>
+    <div class="mounts">
+      <div id="mascot-a"></div>
+      <div id="mascot-b"></div>
+    </div>
+    <pre id="results">Running...</pre>
+  </main>
+
+  <script src="../mascot-widget.js"></script>
+  <script>
+    const results = document.querySelector('#results');
+    const lines = [];
+
+    function assert(condition, message) {
+      if (!condition) throw new Error(message);
+      lines.push(`PASS ${message}`);
+    }
+
+    function finish() {
+      results.textContent = lines.join('\n');
+    }
+
+    try {
+      assert(window.MascotWidget, 'MascotWidget global exists');
+      assert(typeof MascotWidget.mount === 'function', 'mount API exists');
+
+      const first = MascotWidget.mount('#mascot-a', { welcome: false });
+      const second = MascotWidget.mount('#mascot-b', { mood: 'sleepy', welcome: false });
+
+      assert(document.querySelectorAll('.mascot-widget').length === 2, 'two widget instances mount');
+      assert(document.querySelectorAll('[id="mascot-svg"]').length === 0, 'widget internals do not create duplicate IDs');
+
+      first.setMood('excited').say('Testing speech', { duration: 0 }).wave().jump().lookAt(110, 105);
+      second.setMood('error').hide().show().clearSpeech();
+
+      assert(document.querySelector('#mascot-a .mascot-widget__bubble').textContent === 'Testing speech', 'say updates speech bubble');
+      assert(!document.querySelector('#mascot-b .mascot-widget').classList.contains('is-hidden'), 'show restores hidden widget');
+
+      let clicked = false;
+      first.on('click', () => { clicked = true; });
+      document.querySelector('#mascot-a svg').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      assert(clicked, 'click event emits through public API');
+
+      first.destroy();
+      second.destroy();
+      assert(document.querySelectorAll('.mascot-widget').length === 0, 'destroy removes mounted widgets');
+      finish();
+    } catch (error) {
+      lines.push(`FAIL ${error.message}`);
+      results.textContent = lines.join('\n');
+      throw error;
+    }
+  </script>
+</body>
+</html>

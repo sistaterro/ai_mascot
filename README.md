@@ -121,6 +121,7 @@ For example, the mascot should be able to remain in `thinking` while briefly per
 - `mascot-widget.js` is the first embeddable widget build. It injects the mascot markup, scoped styles, and behavior from one script.
 - `mascot-widget.js` is the canonical implementation until this project introduces a build step.
 - `mascot.html` is now the main integration demo. It mounts the widget and controls it through the public API.
+- `tests/browser-smoke.html` is a browser-run smoke test for mounting, API calls, multi-instance behavior, and cleanup.
 - `examples/original.html` preserves the original self-contained prototype.
 - The next major step is hardening the widget API and improving configurability.
 
