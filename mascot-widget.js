@@ -147,7 +147,8 @@
   </svg>
 </div>`;
   const CSS = `.mascot-widget, .mascot-widget * { box-sizing: border-box; }
-.mascot-widget { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; font-family: system-ui, sans-serif; user-select: none; }
+.mascot-widget { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; font-family: system-ui, sans-serif; user-select: none; opacity: 1; transform: translateY(0) scale(1); filter: blur(0); transition: opacity .22s ease, transform .22s ease, filter .22s ease; }
+.mascot-widget.is-hidden { opacity: 0; transform: translateY(14px) scale(.9); filter: blur(2px); pointer-events: none; }
 
   /* ── STAGE ────────────────────────────────────────────── */
 .mascot-widget .mascot-widget__stage {
@@ -383,6 +384,14 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+.mascot-widget .mascot-widget__bubble.speaking {
+    animation: mascot-bubble-pop .34s ease;
+  }
+  @keyframes mascot-bubble-pop {
+    0%   { transform: translateY(8px) scale(.86); }
+    60%  { transform: translateY(-3px) scale(1.08); }
+    100% { transform: translateY(0) scale(1); }
+  }
   /* tail */
 .mascot-widget .mascot-widget__bubble::after {
     content: '';
@@ -475,6 +484,7 @@
       this.isJumping = false;
       this.isDestroyed = false;
       this.bubbleTimer = null;
+      this.speechPulseTimer = null;
       this.blinkTimer = null;
       this.timeouts = new Set();
       this.events = new Map();
@@ -558,8 +568,15 @@
       if (options.mood) this.setMood(options.mood, { silent: true });
 
       clearTimeout(this.bubbleTimer);
+      clearTimeout(this.speechPulseTimer);
+      this.show();
       this.bubble.textContent = text;
-      this.bubble.classList.add('visible');
+      this.bubble.classList.remove('speaking');
+      void this.bubble.offsetWidth;
+      this.bubble.classList.add('visible', 'speaking');
+      this.speechPulseTimer = this.setManagedTimeout(() => {
+        this.bubble.classList.remove('speaking');
+      }, 360);
 
       const duration = options.duration === undefined ? 2400 : options.duration;
       if (duration > 0) {
@@ -574,8 +591,10 @@
     clearSpeech() {
       if (this.isDestroyed) return this;
       clearTimeout(this.bubbleTimer);
+      clearTimeout(this.speechPulseTimer);
       this.bubbleTimer = null;
-      this.bubble.classList.remove('visible');
+      this.speechPulseTimer = null;
+      this.bubble.classList.remove('visible', 'speaking');
       return this;
     }
 
@@ -624,13 +643,16 @@
 
     show() {
       if (this.isDestroyed) return this;
-      this.root.hidden = false;
+      this.root.classList.remove('is-hidden');
+      this.emit('show');
       return this;
     }
 
     hide() {
       if (this.isDestroyed) return this;
-      this.root.hidden = true;
+      this.clearSpeech();
+      this.root.classList.add('is-hidden');
+      this.emit('hide');
       return this;
     }
 
@@ -650,6 +672,7 @@
       this.isDestroyed = true;
       clearTimeout(this.bubbleTimer);
       clearTimeout(this.blinkTimer);
+      clearTimeout(this.speechPulseTimer);
       this.timeouts.forEach(timeout => clearTimeout(timeout));
       this.timeouts.clear();
       document.removeEventListener('mousemove', this.handleMouseMove);
@@ -684,7 +707,7 @@
     }
 
     handlePointerLook(clientX, clientY) {
-      if (this.isDestroyed || this.root.hidden) return;
+      if (this.isDestroyed || this.root.classList.contains('is-hidden')) return;
       const rect = this.svg.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
 

@@ -95,10 +95,18 @@
     document.querySelector('[data-action="wave"]').addEventListener('click', () => mascot.wave());
     document.querySelector('[data-action="jump"]').addEventListener('click', () => mascot.jump());
     document.querySelector('[data-action="say"]').addEventListener('click', () => {
-      mascot.say('Controlado desde el HTML', { duration: 2800 });
+      mascot
+        .setMood('listening', { silent: true })
+        .say('Ahora sí: esta burbuja viene desde la API pública.', { duration: 4200 });
     });
     document.querySelector('[data-action="hide"]').addEventListener('click', () => mascot.hide());
-    document.querySelector('[data-action="show"]').addEventListener('click', () => mascot.show());
+    document.querySelector('[data-action="show"]').addEventListener('click', () => {
+      mascot
+        .show()
+        .setMood('happy', { silent: true })
+        .say('Volví 👋', { duration: 1800 })
+        .wave();
+    });
   </script>
 </body>
 </html>
