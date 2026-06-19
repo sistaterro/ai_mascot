@@ -2,6 +2,10 @@
 
 AI Mascot is a tiny embeddable web mascot project. The goal is to turn the current animated SVG mascot into a single-file JavaScript widget that can be dropped into any HTML page and controlled through a small public API.
 
+It is designed as a friendly character layer for chatbots, AI assistants, onboarding flows, dashboards, learning tools, support pages, or any interface that benefits from lightweight animated feedback.
+
+![AI Mascot preview](assets/mascot%2001.png)
+
 ## Product Direction
 
 This project should behave like a reusable widget, not like a standalone page. A host page should be able to load one script, mount the mascot, and control it without knowing anything about the internal SVG, CSS classes, or animation details.
