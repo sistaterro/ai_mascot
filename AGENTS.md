@@ -10,7 +10,8 @@ The user likes the direction of making this a reusable widget rather than a stan
 
 ## Current Files
 
-- `mascot.html`: main working demo. It includes the current mascot markup and imports separated CSS and JS.
+- `mascot-widget.js`: first embeddable widget. It injects mascot markup, scoped styles, behavior, and exposes `window.MascotWidget`.
+- `mascot.html`: main integration demo. It mounts `MascotWidget` and controls it through the public API.
 - `src/mascot.css`: current styles and animation rules extracted from the original prototype.
 - `src/mascot.js`: current behavior extracted from the original prototype. It still uses global functions and direct DOM IDs.
 - `examples/original.html`: preserved copy of the original self-contained prototype.
@@ -86,12 +87,11 @@ Actions should not permanently overwrite the current mood. For example, `jump()`
 
 ## Near-Term Task List
 
-1. Add `mascot-widget.js`.
-2. Move the split SVG, CSS, and JS behavior into the widget.
-3. Have the widget inject a scoped root element and styles.
-4. Replace page-level global functions with a controller instance.
-5. Update `mascot.html` so it becomes a demo page that imports and controls the widget.
-6. Keep the first widget API intentionally small.
+1. Review and harden `mascot-widget.js`.
+2. Keep the widget API intentionally small.
+3. Add configuration options for size, initial mood, welcome behavior, and placement.
+4. Add a second demo page that shows the widget inside an arbitrary host layout.
+5. Consider whether to generate `mascot-widget.js` from `src/` or make the widget the source of truth.
 
 ## Coding Preferences
 

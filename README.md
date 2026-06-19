@@ -76,17 +76,17 @@ For example, the mascot should be able to remain in `thinking` while briefly per
 
 ## Current State
 
-- `mascot.html` is now the main demo page. It keeps the mascot markup and loads separated CSS and JavaScript.
-- `src/mascot.css` contains the current visual styles and animations.
-- `src/mascot.js` contains the current behavior: moods, speech bubble, cursor-following pupils, wave, jump, and blink interactions.
+- `mascot-widget.js` is the first embeddable widget build. It injects the mascot markup, scoped styles, and behavior from one script.
+- `mascot.html` is now the main integration demo. It mounts the widget and controls it through the public API.
+- `src/mascot.css` and `src/mascot.js` remain as the split prototype/reference implementation.
 - `examples/original.html` preserves the original self-contained prototype.
-- The next major step is turning the separated prototype into `mascot-widget.js`, where the widget injects its own markup and styles.
+- The next major step is hardening the widget API and improving configurability.
 
 ## Suggested Milestones
 
 1. Keep `examples/original.html` as the untouched visual reference.
 2. Use `mascot.html`, `src/mascot.css`, and `src/mascot.js` as the working split prototype.
-3. Create `mascot-widget.js` with the same visual mascot embedded as a JS widget.
-4. Expose the minimal public API: `mount`, `setMood`, `say`, `wave`, `jump`, `show`, `hide`, `destroy`.
-5. Update `mascot.html` to consume `mascot-widget.js` instead of depending on page-specific global functions.
+3. Maintain `mascot-widget.js` as the embeddable single-file widget.
+4. Harden the minimal public API: `mount`, `setMood`, `say`, `wave`, `jump`, `show`, `hide`, `destroy`.
+5. Add configuration options for position, initial mood, welcome message, and size.
 6. Add a second demo HTML that shows integration into an arbitrary host page.

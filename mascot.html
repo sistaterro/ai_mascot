@@ -3,176 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Mascot Demo</title>
-<link rel="stylesheet" href="src/mascot.css">
+<title>AI Mascot Widget Demo</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    background: #F0F4FF;
+    color: #1E293B;
+    font-family: system-ui, sans-serif;
+  }
+
+  .demo-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .demo-label {
+    color: #64748B;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .demo-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  button {
+    border: 0;
+    border-radius: 999px;
+    padding: 9px 16px;
+    background: #FFFFFF;
+    color: #1E293B;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, .12);
+    cursor: pointer;
+    font: inherit;
+    font-size: .9rem;
+    font-weight: 700;
+  }
+
+  button:hover { transform: translateY(-1px); }
+  button:active { transform: translateY(0) scale(.97); }
+</style>
 </head>
 <body>
+  <div id="mascot"></div>
 
-<!-- ── STAGE ──────────────────────────────────────────────── -->
-<div class="stage">
+  <div class="demo-panel">
+    <div class="demo-label">Moods</div>
+    <div class="demo-row">
+      <button data-mood="happy">Happy</button>
+      <button data-mood="sad">Sad</button>
+      <button data-mood="excited">Excited</button>
+      <button data-mood="sleepy">Sleepy</button>
+      <button data-mood="thinking">Thinking</button>
+      <button data-mood="success">Success</button>
+      <button data-mood="error">Error</button>
+    </div>
 
-  <!-- Speech bubble -->
-  <div class="bubble" id="bubble">¡Hola! 👋</div>
-
-  <!-- ── SVG MASCOT ─────────────────────────────────────── -->
-  <svg id="mascot-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-
-    <!-- SHADOW -->
-    <ellipse id="shadow" cx="110" cy="214" rx="44" ry="9" fill="#334155"/>
-
-    <!-- BODY GROUP — todo lo que bouncea -->
-    <g id="body-group">
-
-      <!-- ── EARS (debajo del cuerpo para que queden atrás) -->
-      <g id="ear-left">
-        <!-- oreja izquierda: punta redondeada -->
-        <ellipse cx="71" cy="68" rx="18" ry="24" fill="#FF6B35" transform="rotate(-10 71 68)"/>
-        <ellipse cx="71" cy="70" rx="11" ry="16" fill="#FF8C5A" transform="rotate(-10 71 70)"/>
-      </g>
-      <g id="ear-right">
-        <ellipse cx="149" cy="68" rx="18" ry="24" fill="#FF6B35" transform="rotate(10 149 68)"/>
-        <ellipse cx="149" cy="70" rx="11" ry="16" fill="#FF8C5A" transform="rotate(10 149 70)"/>
-      </g>
-
-      <!-- ── ARMS ──────────────────────────────────────── -->
-      <!-- Brazo izq — origen de rotación en 72,138 -->
-      <g id="arm-left">
-        <ellipse cx="72" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(-20 72 148)"/>
-        <!-- manito -->
-        <circle cx="62" cy="155" r="9" fill="#FF6B35"/>
-        <circle cx="56" cy="151" r="5" fill="#FF8C5A"/>
-        <circle cx="55" cy="158" r="5" fill="#FF8C5A"/>
-        <circle cx="61" cy="162" r="5" fill="#FF8C5A"/>
-      </g>
-      <!-- Brazo der -->
-      <g id="arm-right">
-        <ellipse cx="148" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(20 148 148)"/>
-        <circle cx="158" cy="155" r="9" fill="#FF6B35"/>
-        <circle cx="164" cy="151" r="5" fill="#FF8C5A"/>
-        <circle cx="165" cy="158" r="5" fill="#FF8C5A"/>
-        <circle cx="159" cy="162" r="5" fill="#FF8C5A"/>
-      </g>
-
-      <!-- ── BODY (cuerpo principal) ────────────────────── -->
-      <ellipse cx="110" cy="158" rx="52" ry="48" fill="#FF6B35"/>
-
-      <!-- ── HEAD ──────────────────────────────────────── -->
-      <circle cx="110" cy="108" r="58" fill="#FF6B35"/>
-
-      <!-- ── CHEEKS ─────────────────────────────────────── -->
-      <ellipse id="cheek-l" cx="74"  cy="118" rx="13" ry="9"  fill="#FF9580" opacity=".6"/>
-      <ellipse id="cheek-r" cx="146" cy="118" rx="13" ry="9"  fill="#FF9580" opacity=".6"/>
-
-      <!-- ── BELLY patch ──────────────────────────────── -->
-      <ellipse cx="110" cy="160" rx="35" ry="30" fill="#FF8C5A" opacity=".55"/>
-
-      <!-- ── EYE LEFT ───────────────────────────────────── -->
-      <g id="eye-l">
-        <!-- blanco del ojo -->
-        <ellipse cx="88"  cy="105" rx="18" ry="20" fill="white"/>
-        <!-- pupila -->
-        <g id="pupil-l">
-          <circle cx="88" cy="106" r="11" fill="#1E293B"/>
-          <!-- brillo -->
-          <circle cx="93" cy="101" r="4"  fill="white"/>
-          <circle cx="84" cy="109" r="2"  fill="white" opacity=".5"/>
-        </g>
-        <!-- párpado — cubre el ojo al parpadear -->
-        <g id="blink-l" style="transform-origin: 88px 96px;">
-          <ellipse cx="88" cy="105" rx="18.5" ry="20.5" fill="#FF6B35"/>
-        </g>
-      </g>
-
-      <!-- ── EYE RIGHT ──────────────────────────────────── -->
-      <g id="eye-r">
-        <ellipse cx="132" cy="105" rx="18" ry="20" fill="white"/>
-        <g id="pupil-r">
-          <circle cx="132" cy="106" r="11" fill="#1E293B"/>
-          <circle cx="137" cy="101" r="4"  fill="white"/>
-          <circle cx="128" cy="109" r="2"  fill="white" opacity=".5"/>
-        </g>
-        <g id="blink-r" style="transform-origin: 132px 96px;">
-          <ellipse cx="132" cy="105" rx="18.5" ry="20.5" fill="#FF6B35"/>
-        </g>
-      </g>
-
-      <!-- ── NOSE ───────────────────────────────────────── -->
-      <ellipse cx="110" cy="120" rx="6" ry="4" fill="#CC4400" opacity=".4"/>
-
-      <!-- ── MOUTHS (uno visible a la vez) ─────────────── -->
-      <!-- happy (default) -->
-      <path id="mouth-happy" class="mouth-path active"
-            d="M 93 132 Q 110 148 127 132"
-            stroke="#CC4400" stroke-width="3.5" stroke-linecap="round"
-            fill="none" opacity=".7"/>
-
-      <!-- sad -->
-      <path id="mouth-sad" class="mouth-path"
-            d="M 93 142 Q 110 130 127 142"
-            stroke="#6B8CFF" stroke-width="3.5" stroke-linecap="round"
-            fill="none"/>
-
-      <!-- surprised — "O" -->
-      <ellipse id="mouth-surprised" class="mouth-path"
-               cx="110" cy="136" rx="10" ry="12"
-               fill="#CC4400" opacity=".5"/>
-
-      <!-- excited — big grin with teeth -->
-      <path id="mouth-excited" class="mouth-path"
-            d="M 88 130 Q 110 152 132 130"
-            stroke="#CC4400" stroke-width="3.5" stroke-linecap="round"
-            fill="none" opacity=".7"/>
-      <!-- teeth line -->
-      <line id="teeth-line" class="mouth-path"
-            x1="97" y1="135" x2="123" y2="135"
-            stroke="#CC4400" stroke-width="2" opacity=".4"/>
-
-      <!-- sleepy — flat line + zzz -->
-      <path id="mouth-sleepy" class="mouth-path"
-            d="M 98 136 Q 110 138 122 136"
-            stroke="#9B8EC4" stroke-width="3" stroke-linecap="round"
-            fill="none"/>
-
-      <!-- ── SLEEPY ZZZ ─────────────────────────────────── -->
-      <g id="zzz" style="opacity:0; transition: opacity .3s;">
-        <text x="148" y="88" font-size="13" font-weight="800" fill="#9B8EC4" font-family="system-ui">z</text>
-        <text x="158" y="78" font-size="10" font-weight="800" fill="#9B8EC4" font-family="system-ui" opacity=".7">z</text>
-        <text x="166" y="70" font-size="8"  font-weight="800" fill="#9B8EC4" font-family="system-ui" opacity=".4">z</text>
-      </g>
-
-      <!-- ── HALF-CLOSED EYES for sleepy ───────────────── -->
-      <g id="sleepy-lids" style="opacity:0; transition: opacity .3s; pointer-events:none;">
-        <!-- tapa mitad superior del ojo izq -->
-        <rect x="70" y="86" width="36" height="18" fill="#FF6B35" rx="2"/>
-        <!-- tapa mitad superior del ojo der -->
-        <rect x="114" y="86" width="36" height="18" fill="#FF6B35" rx="2"/>
-      </g>
-
-    </g><!-- /body-group -->
-  </svg>
-</div>
-
-<!-- ── PANEL DE CONTROL ────────────────────────────────────── -->
-<div class="panel">
-  <div class="panel-label">Estado</div>
-  <div class="btn-row">
-    <button class="btn btn--happy"   onclick="setState('happy')">😊 Feliz</button>
-    <button class="btn btn--sad"     onclick="setState('sad')">😢 Triste</button>
-    <button class="btn btn--excited" onclick="setState('excited')">🤩 Excited</button>
-    <button class="btn btn--sleepy"  onclick="setState('sleepy')">😴 Sleepy</button>
+    <div class="demo-label">Actions</div>
+    <div class="demo-row">
+      <button data-action="wave">Wave</button>
+      <button data-action="jump">Jump</button>
+      <button data-action="say">Say</button>
+      <button data-action="hide">Hide</button>
+      <button data-action="show">Show</button>
+    </div>
   </div>
-  <div class="panel-label" style="margin-top:4px;">Acciones</div>
-  <div class="btn-row">
-    <button class="btn btn--wave" onclick="doWave()">👋 Saludar</button>
-    <button class="btn btn--jump" onclick="doJump()">🚀 Saltar</button>
-  </div>
-</div>
 
-<div class="hint">
-  💡 Tip: hacé click en la mascota para que salte<br>
-  Mové el cursor cerca para que te mire
-</div>
+  <script src="mascot-widget.js"></script>
+  <script>
+    const mascot = MascotWidget.mount('#mascot');
 
-<script src="src/mascot.js"></script>
+    document.querySelectorAll('[data-mood]').forEach(button => {
+      button.addEventListener('click', () => mascot.setMood(button.dataset.mood));
+    });
+
+    document.querySelector('[data-action="wave"]').addEventListener('click', () => mascot.wave());
+    document.querySelector('[data-action="jump"]').addEventListener('click', () => mascot.jump());
+    document.querySelector('[data-action="say"]').addEventListener('click', () => {
+      mascot.say('Controlado desde el HTML', { duration: 2800 });
+    });
+    document.querySelector('[data-action="hide"]').addEventListener('click', () => mascot.hide());
+    document.querySelector('[data-action="show"]').addEventListener('click', () => mascot.show());
+  </script>
 </body>
 </html>
