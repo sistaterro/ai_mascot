@@ -147,12 +147,12 @@ For example, the mascot should be able to remain in `thinking` while briefly per
 - `mascot.html` is now the main integration demo. It mounts the widget and controls it through the public API.
 - `examples/chatbot-host.html` shows the widget inside a regular chatbot-like host page.
 - `tests/browser-smoke.html` is a browser-run smoke test for mounting, API calls, multi-instance behavior, and cleanup.
-- `examples/original.html` preserves the original self-contained prototype.
+- `examples/legacy-prototype.html` keeps the old self-contained prototype shape for historical comparison.
 - The next major step is hardening the widget API and improving configurability.
 
 ## Suggested Milestones
 
-1. Keep `examples/original.html` as the untouched visual reference.
+1. Keep `examples/legacy-prototype.html` as the legacy visual reference.
 2. Maintain `mascot-widget.js` as the embeddable single-file widget and source of truth.
 3. Keep demos and examples as consumers or historical references.
 4. Harden the minimal public API: `mount`, `setMood`, `say`, `wave`, `jump`, `show`, `hide`, `destroy`.

@@ -12,7 +12,7 @@ The user likes the direction of making this a reusable widget rather than a stan
 
 - `mascot-widget.js`: first embeddable widget. It injects mascot markup, scoped styles, behavior, and exposes `window.MascotWidget`.
 - `mascot.html`: main integration demo. It mounts `MascotWidget` and controls it through the public API.
-- `examples/original.html`: preserved copy of the original self-contained prototype.
+- `examples/legacy-prototype.html`: legacy self-contained prototype retained for historical comparison.
 - `README.md`: human-facing project overview and planned API.
 - `AGENTS.md`: this handoff file.
 
