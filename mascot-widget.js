@@ -153,14 +153,15 @@
   </svg>
 </div>`;
   const CSS = `.mascot-widget, .mascot-widget * { box-sizing: border-box; }
-.mascot-widget { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; font-family: system-ui, sans-serif; user-select: none; opacity: 1; transform: translateY(0) scale(1); filter: blur(0); transition: opacity .22s ease, transform .22s ease, filter .22s ease; }
+.mascot-widget { --mascot-size: 260px; --mascot-svg-size: calc(var(--mascot-size) * .846); display: inline-flex; flex-direction: column; align-items: center; justify-content: center; font-family: system-ui, sans-serif; user-select: none; opacity: 1; transform: translateY(0) scale(1); filter: blur(0); transition: opacity .22s ease, transform .22s ease, filter .22s ease; }
+.mascot-widget.is-fixed { position: fixed; z-index: 2147483000; }
 .mascot-widget.is-hidden { opacity: 0; transform: translateY(14px) scale(.9); filter: blur(2px); pointer-events: none; }
 
   /* ── STAGE ────────────────────────────────────────────── */
 .mascot-widget .mascot-widget__stage {
     position: relative;
-    width: 260px;
-    height: 260px;
+    width: var(--mascot-size);
+    height: var(--mascot-size);
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -168,8 +169,8 @@
 
   /* ── SVG mascot wrapper ───────────────────────────────── */
 .mascot-widget [data-mascot-part="mascot-svg"] {
-    width: 220px;
-    height: 220px;
+    width: var(--mascot-svg-size);
+    height: var(--mascot-svg-size);
     cursor: pointer;
     overflow: visible;
   }
@@ -423,6 +424,19 @@
   }`;
 
   const DEFAULT_MOOD = 'happy';
+  const DEFAULT_OPTIONS = {
+    mood: DEFAULT_MOOD,
+    welcome: true,
+    welcomeText: null,
+    messages: {},
+    size: 260,
+    mode: 'inline',
+    placement: 'bottom-right',
+    offset: 24,
+    primaryColor: '#FF6B35',
+    accentColor: '#FF8C5A',
+  };
+
   const BUBBLE_TEXTS = {
     happy: 'Hello! \ud83d\ude0a',
     sad: 'I am sad... \ud83d\ude22',
@@ -461,6 +475,12 @@
     r: { x: 132, y: 105 },
   };
   const MAX_EYE_OFFSET = 4;
+  const PLACEMENTS = {
+    'top-left': { top: true, left: true },
+    'top-right': { top: true, right: true },
+    'bottom-left': { bottom: true, left: true },
+    'bottom-right': { bottom: true, right: true },
+  };
 
   function injectStyles() {
     if (document.getElementById(STYLE_ID)) return;
@@ -485,8 +505,9 @@
   class MascotController {
     constructor(target, options = {}) {
       this.target = resolveTarget(target);
-      this.options = options;
-      this.currentMood = options.mood || DEFAULT_MOOD;
+      this.options = { ...DEFAULT_OPTIONS, ...options };
+      this.messages = { ...BUBBLE_TEXTS, ...this.options.messages };
+      this.currentMood = this.options.mood || DEFAULT_MOOD;
       this.isJumping = false;
       this.isDestroyed = false;
       this.bubbleTimer = null;
@@ -501,8 +522,8 @@
       this.setMood(this.currentMood, { silent: true });
       this.scheduleBlink(1200 + Math.random() * 1200);
 
-      if (options.welcome !== false) {
-        this.setManagedTimeout(() => this.say(BUBBLE_TEXTS[this.currentMood] || 'Hello! \ud83d\ude0a'), 500);
+      if (this.options.welcome !== false) {
+        this.setManagedTimeout(() => this.say(this.getWelcomeText()), 500);
       }
     }
 
@@ -533,6 +554,7 @@
         excited: find('[data-mascot-part="mouth-excited"]'),
         sleepy: find('[data-mascot-part="mouth-sleepy"]'),
       };
+      this.applyOptions();
     }
 
     bindEvents() {
@@ -564,7 +586,7 @@
       this.sleepyLids.style.opacity = isSleepy ? '1' : '0';
 
       if (nextMood === 'excited' || nextMood === 'success') this.shake();
-      if (!options.silent) this.say(BUBBLE_TEXTS[nextMood] || '');
+      if (!options.silent) this.say(this.messages[nextMood] || '');
       this.emit('moodchange', nextMood);
       return this;
     }
@@ -602,6 +624,44 @@
       this.speechPulseTimer = null;
       this.bubble.classList.remove('visible', 'speaking');
       return this;
+    }
+
+    applyOptions() {
+      const size = Number(this.options.size) || DEFAULT_OPTIONS.size;
+      this.root.style.setProperty('--mascot-size', `${size}px`);
+      this.root.classList.toggle('is-fixed', this.options.mode === 'fixed');
+      this.applyPlacement();
+      this.applyTheme();
+    }
+
+    applyPlacement() {
+      ['top', 'right', 'bottom', 'left'].forEach(side => {
+        this.root.style[side] = '';
+      });
+
+      if (this.options.mode !== 'fixed') return;
+
+      const placement = PLACEMENTS[this.options.placement] || PLACEMENTS[DEFAULT_OPTIONS.placement];
+      const offset = typeof this.options.offset === 'number' ? `${this.options.offset}px` : this.options.offset;
+      Object.keys(placement).forEach(side => {
+        this.root.style[side] = offset;
+      });
+    }
+
+    applyTheme() {
+      const primaryColor = this.options.primaryColor;
+      const accentColor = this.options.accentColor;
+      this.root.querySelectorAll('[fill="#FF6B35"]').forEach(element => {
+        element.setAttribute('fill', primaryColor);
+      });
+      this.root.querySelectorAll('[fill="#FF8C5A"]').forEach(element => {
+        element.setAttribute('fill', accentColor);
+      });
+    }
+
+    getWelcomeText() {
+      if (this.options.welcomeText) return this.options.welcomeText;
+      return this.messages[this.currentMood] || this.messages.happy;
     }
 
     wave() {

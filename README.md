@@ -25,6 +25,7 @@ This project should behave like a reusable widget, not like a standalone page. A
   const mascot = MascotWidget.mount("#mascot", {
     mood: "happy",
     welcome: true,
+    size: 260,
   });
 
   mascot.say("Hello from my page");
@@ -69,6 +70,17 @@ The first public API should stay small and predictable:
 ```js
 const mascot = MascotWidget.mount("#mascot", {
   mood: "happy",
+  size: 260,
+  mode: "inline",
+  placement: "bottom-right",
+  offset: 24,
+  primaryColor: "#FF6B35",
+  accentColor: "#FF8C5A",
+  welcome: true,
+  welcomeText: "Hello!",
+  messages: {
+    error: "Something needs attention",
+  },
 });
 
 mascot.setMood("happy");
@@ -81,6 +93,18 @@ mascot.show();
 mascot.hide();
 mascot.destroy();
 ```
+
+Useful mount options:
+
+- `mood`: initial mood.
+- `size`: widget size in pixels.
+- `mode`: `"inline"` for normal layout or `"fixed"` for viewport placement.
+- `placement`: `"top-left"`, `"top-right"`, `"bottom-left"`, or `"bottom-right"` when `mode` is `"fixed"`.
+- `offset`: fixed placement offset in pixels or any CSS length.
+- `primaryColor` and `accentColor`: basic mascot color theme.
+- `welcome`: show or skip the initial speech bubble.
+- `welcomeText`: override the initial speech bubble.
+- `messages`: override built-in mood messages.
 
 Longer-term events may look like this:
 

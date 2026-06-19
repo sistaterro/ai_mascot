@@ -99,6 +99,7 @@ Actions should not permanently overwrite the current mood. For example, `jump()`
 - Avoid dependencies unless the user explicitly asks for them.
 - Keep the widget easy to embed in static pages.
 - Keep every repository word in English. This includes UI text, examples, comments, docs, commit-facing messages, and preserved prototypes.
+- Keep mount options documented in `README.md` whenever the public widget API changes.
 - Avoid leaking generic CSS into the host page. Scope selectors under a widget root class.
 - Avoid requiring build tools for the initial version.
 - Prefer readable code over clever minification.
