@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mascota SVG</title>
+<style>
+  /* ── PAGE ─────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    background: #F0F4FF;
+    font-family: system-ui, sans-serif;
+    user-select: none;
+  }
+
+  /* ── STAGE ────────────────────────────────────────────── */
+  .stage {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  /* ── SVG mascot wrapper ───────────────────────────────── */
+  #mascot-svg {
+    width: 220px;
+    height: 220px;
+    cursor: pointer;
+    overflow: visible;
+  }
+
+  /* ── IDLE BOUNCE (cuerpo completo) ───────────────────── */
+  #body-group {
+    animation: idle-bounce 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
+    transform-origin: 110px 200px;
+  }
+
+  @keyframes idle-bounce {
+    0%,100% { transform: translateY(0px)    scaleY(1)    scaleX(1); }
+    45%      { transform: translateY(-14px)  scaleY(1.04) scaleX(.97); }
+    55%      { transform: translateY(-14px)  scaleY(1.04) scaleX(.97); }
+    85%      { transform: translateY(2px)    scaleY(.95)  scaleX(1.03); }
+  }
+
+  /* Cuando está en jump la animación se pausa y JS toma el control */
+  #body-group.jumping {
+    animation: none;
+  }
+
+  /* ── SHADOW ───────────────────────────────────────────── */
+  #shadow {
+    animation: idle-shadow 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
+    transform-origin: 110px 216px;
+  }
+
+  @keyframes idle-shadow {
+    0%,100% { transform: scaleX(1);    opacity: .25; }
+    45%      { transform: scaleX(.65); opacity: .12; }
+    55%      { transform: scaleX(.65); opacity: .12; }
+    85%      { transform: scaleX(1.1); opacity: .3;  }
+  }
+
+  #shadow.jumping { animation: none; }
+
+  /* ── ARMS ────────────────────────────────────────────── */
+  #arm-left {
+    transform-origin: 72px 138px;
+    animation: arm-idle-l 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
+  }
+  #arm-right {
+    transform-origin: 148px 138px;
+    animation: arm-idle-r 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
+  }
+
+  @keyframes arm-idle-l {
+    0%,100% { transform: rotate(0deg);   }
+    50%      { transform: rotate(-8deg);  }
+  }
+  @keyframes arm-idle-r {
+    0%,100% { transform: rotate(0deg);   }
+    50%      { transform: rotate(8deg);   }
+  }
+
+  /* Wave — aplicado como clase desde JS */
+  #arm-left.waving {
+    animation: wave-l .5s ease-in-out 3;
+  }
+  #arm-right.waving {
+    animation: wave-r .5s ease-in-out 3;
+  }
+
+  @keyframes wave-l {
+    0%,100% { transform: rotate(0deg);   }
+    50%      { transform: rotate(-35deg); }
+  }
+  @keyframes wave-r {
+    0%,100% { transform: rotate(0deg);   }
+    50%      { transform: rotate(35deg);  }
+  }
+
+  /* ── EARS (wiggle on hover) ──────────────────────────── */
+  #ear-left {
+    transform-origin: 72px 70px;
+    transition: transform .2s;
+  }
+  #ear-right {
+    transform-origin: 148px 70px;
+    transition: transform .2s;
+  }
+  #mascot-svg:hover #ear-left  { animation: ear-wiggle-l .4s ease-in-out 2; }
+  #mascot-svg:hover #ear-right { animation: ear-wiggle-r .4s ease-in-out 2; }
+
+  @keyframes ear-wiggle-l {
+    0%,100% { transform: rotate(0deg);  }
+    40%      { transform: rotate(-12deg); }
+  }
+  @keyframes ear-wiggle-r {
+    0%,100% { transform: rotate(0deg); }
+    40%      { transform: rotate(12deg); }
+  }
+
+  /* ── BLINK ───────────────────────────────────────────── */
+  #blink-l, #blink-r {
+    transform-origin: center;
+    transform: scaleY(0);
+    transition: transform .06s ease-in;
+  }
+  .blinking #blink-l,
+  .blinking #blink-r {
+    transform: scaleY(1);
+  }
+
+  /* ── PUPILS ──────────────────────────────────────────── */
+  #pupil-l, #pupil-r {
+    transition: transform .12s ease-out;
+  }
+
+  /* ── MOUTH STATES ────────────────────────────────────── */
+  .mouth-path {
+    transition: d .25s ease, opacity .2s;
+  }
+  /* All hidden by default, JS toggles .active */
+  .mouth-path          { opacity: 0; }
+  .mouth-path.active   { opacity: 1; }
+
+  /* ── CHEEKS ──────────────────────────────────────────── */
+  #cheek-l, #cheek-r {
+    transition: opacity .3s;
+  }
+
+  /* ── JUMP ─────────────────────────────────────────────── */
+  .jump-anim {
+    animation: jump-seq .55s cubic-bezier(.28,.84,.44,1) forwards !important;
+    transform-origin: 110px 200px;
+  }
+  @keyframes jump-seq {
+    0%   { transform: translateY(0)    scaleY(1)    scaleX(1); }
+    20%  { transform: translateY(4px)  scaleY(.88)  scaleX(1.1); }
+    45%  { transform: translateY(-38px) scaleY(1.06) scaleX(.95); }
+    70%  { transform: translateY(-38px) scaleY(1.06) scaleX(.95); }
+    85%  { transform: translateY(4px)  scaleY(.9)   scaleX(1.08); }
+    100% { transform: translateY(0)    scaleY(1)    scaleX(1); }
+  }
+  .shadow-jump {
+    animation: shadow-jump-seq .55s ease forwards !important;
+    transform-origin: 110px 216px;
+  }
+  @keyframes shadow-jump-seq {
+    0%   { transform: scaleX(1);    opacity: .25; }
+    20%  { transform: scaleX(1.12); opacity: .3;  }
+    50%  { transform: scaleX(.5);   opacity: .1;  }
+    85%  { transform: scaleX(1.12); opacity: .3;  }
+    100% { transform: scaleX(1);    opacity: .25; }
+  }
+
+  /* ── EXCITED SHAKE ───────────────────────────────────── */
+  .shake {
+    animation: shake .4s ease !important;
+    transform-origin: 110px 160px;
+  }
+  @keyframes shake {
+    0%,100% { transform: rotate(0deg);  }
+    20%     { transform: rotate(-6deg); }
+    40%     { transform: rotate(6deg);  }
+    60%     { transform: rotate(-5deg); }
+    80%     { transform: rotate(5deg);  }
+  }
+
+  /* ── CONTROL PANEL ───────────────────────────────────── */
+  .panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .panel-label {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #94A3B8;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 999px;
+    font-size: .875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .1s, opacity .1s;
+    letter-spacing: .01em;
+  }
+  .btn:hover  { opacity: .88; }
+  .btn:active { transform: scale(.95); }
+
+  .btn--happy    { background: #FF6B35; color: #fff; }
+  .btn--sad      { background: #6B8CFF; color: #fff; }
+  .btn--excited  { background: #FFD93D; color: #1a1a1a; }
+  .btn--sleepy   { background: #9B8EC4; color: #fff; }
+  .btn--wave     { background: #4ECB71; color: #fff; }
+  .btn--jump     { background: #FF6B6B; color: #fff; }
+
+  /* ── SPEECH BUBBLE ───────────────────────────────────── */
+  .bubble {
+    position: absolute;
+    top: 0; right: -20px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 8px 14px;
+    font-size: .85rem;
+    font-weight: 600;
+    color: #334155;
+    box-shadow: 0 4px 20px rgba(0,0,0,.1);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(6px) scale(.92);
+    transition: opacity .22s ease, transform .22s ease;
+    pointer-events: none;
+  }
+  .bubble.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  /* tail */
+  .bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -7px; left: 20px;
+    width: 0; height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 8px solid #fff;
+  }
+
+  /* ── CODE HINT ───────────────────────────────────────── */
+  .hint {
+    font-size: .7rem;
+    color: #94A3B8;
+    font-family: monospace;
+    background: #E2E8F0;
+    border-radius: 6px;
+    padding: 6px 12px;
+    max-width: 300px;
+    text-align: center;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── STAGE ──────────────────────────────────────────────── -->
+<div class="stage">
+
+  <!-- Speech bubble -->
+  <div class="bubble" id="bubble">¡Hola! 👋</div>
+
+  <!-- ── SVG MASCOT ─────────────────────────────────────── -->
+  <svg id="mascot-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- SHADOW -->
+    <ellipse id="shadow" cx="110" cy="214" rx="44" ry="9" fill="#334155"/>
+
+    <!-- BODY GROUP — todo lo que bouncea -->
+    <g id="body-group">
+
+      <!-- ── EARS (debajo del cuerpo para que queden atrás) -->
+      <g id="ear-left">
+        <!-- oreja izquierda: punta redondeada -->
+        <ellipse cx="71" cy="68" rx="18" ry="24" fill="#FF6B35" transform="rotate(-10 71 68)"/>
+        <ellipse cx="71" cy="70" rx="11" ry="16" fill="#FF8C5A" transform="rotate(-10 71 70)"/>
+      </g>
+      <g id="ear-right">
+        <ellipse cx="149" cy="68" rx="18" ry="24" fill="#FF6B35" transform="rotate(10 149 68)"/>
+        <ellipse cx="149" cy="70" rx="11" ry="16" fill="#FF8C5A" transform="rotate(10 149 70)"/>
+      </g>
+
+      <!-- ── ARMS ──────────────────────────────────────── -->
+      <!-- Brazo izq — origen de rotación en 72,138 -->
+      <g id="arm-left">
+        <ellipse cx="72" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(-20 72 148)"/>
+        <!-- manito -->
+        <circle cx="62" cy="155" r="9" fill="#FF6B35"/>
+        <circle cx="56" cy="151" r="5" fill="#FF8C5A"/>
+        <circle cx="55" cy="158" r="5" fill="#FF8C5A"/>
+        <circle cx="61" cy="162" r="5" fill="#FF8C5A"/>
+      </g>
+      <!-- Brazo der -->
+      <g id="arm-right">
+        <ellipse cx="148" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(20 148 148)"/>
+        <circle cx="158" cy="155" r="9" fill="#FF6B35"/>
+        <circle cx="164" cy="151" r="5" fill="#FF8C5A"/>
+        <circle cx="165" cy="158" r="5" fill="#FF8C5A"/>
+        <circle cx="159" cy="162" r="5" fill="#FF8C5A"/>
+      </g>
+
+      <!-- ── BODY (cuerpo principal) ────────────────────── -->
+      <ellipse cx="110" cy="158" rx="52" ry="48" fill="#FF6B35"/>
+
+      <!-- ── HEAD ──────────────────────────────────────── -->
+      <circle cx="110" cy="108" r="58" fill="#FF6B35"/>
+
+      <!-- ── CHEEKS ─────────────────────────────────────── -->
+      <ellipse id="cheek-l" cx="74"  cy="118" rx="13" ry="9"  fill="#FF9580" opacity=".6"/>
+      <ellipse id="cheek-r" cx="146" cy="118" rx="13" ry="9"  fill="#FF9580" opacity=".6"/>
+
+      <!-- ── BELLY patch ──────────────────────────────── -->
+      <ellipse cx="110" cy="160" rx="35" ry="30" fill="#FF8C5A" opacity=".55"/>
+
+      <!-- ── EYE LEFT ───────────────────────────────────── -->
+      <g id="eye-l">
+        <!-- blanco del ojo -->
+        <ellipse cx="88"  cy="105" rx="18" ry="20" fill="white"/>
+        <!-- pupila -->
+        <g id="pupil-l">
+          <circle cx="88" cy="106" r="11" fill="#1E293B"/>
+          <!-- brillo -->
+          <circle cx="93" cy="101" r="4"  fill="white"/>
+          <circle cx="84" cy="109" r="2"  fill="white" opacity=".5"/>
+        </g>
+        <!-- párpado — cubre el ojo al parpadear -->
+        <g id="blink-l" style="transform-origin: 88px 96px;">
+          <ellipse cx="88" cy="105" rx="18.5" ry="20.5" fill="#FF6B35"/>
+        </g>
+      </g>
+
+      <!-- ── EYE RIGHT ──────────────────────────────────── -->
+      <g id="eye-r">
+        <ellipse cx="132" cy="105" rx="18" ry="20" fill="white"/>
+        <g id="pupil-r">
+          <circle cx="132" cy="106" r="11" fill="#1E293B"/>
+          <circle cx="137" cy="101" r="4"  fill="white"/>
+          <circle cx="128" cy="109" r="2"  fill="white" opacity=".5"/>
+        </g>
+        <g id="blink-r" style="transform-origin: 132px 96px;">
+          <ellipse cx="132" cy="105" rx="18.5" ry="20.5" fill="#FF6B35"/>
+        </g>
+      </g>
+
+      <!-- ── NOSE ───────────────────────────────────────── -->
+      <ellipse cx="110" cy="120" rx="6" ry="4" fill="#CC4400" opacity=".4"/>
+
+      <!-- ── MOUTHS (uno visible a la vez) ─────────────── -->
+      <!-- happy (default) -->
+      <path id="mouth-happy" class="mouth-path active"
+            d="M 93 132 Q 110 148 127 132"
+            stroke="#CC4400" stroke-width="3.5" stroke-linecap="round"
+            fill="none" opacity=".7"/>
+
+      <!-- sad -->
+      <path id="mouth-sad" class="mouth-path"
+            d="M 93 142 Q 110 130 127 142"
+            stroke="#6B8CFF" stroke-width="3.5" stroke-linecap="round"
+            fill="none"/>
+
+      <!-- surprised — "O" -->
+      <ellipse id="mouth-surprised" class="mouth-path"
+               cx="110" cy="136" rx="10" ry="12"
+               fill="#CC4400" opacity=".5"/>
+
+      <!-- excited — big grin with teeth -->
+      <path id="mouth-excited" class="mouth-path"
+            d="M 88 130 Q 110 152 132 130"
+            stroke="#CC4400" stroke-width="3.5" stroke-linecap="round"
+            fill="none" opacity=".7"/>
+      <!-- teeth line -->
+      <line id="teeth-line" class="mouth-path"
+            x1="97" y1="135" x2="123" y2="135"
+            stroke="#CC4400" stroke-width="2" opacity=".4"/>
+
+      <!-- sleepy — flat line + zzz -->
+      <path id="mouth-sleepy" class="mouth-path"
+            d="M 98 136 Q 110 138 122 136"
+            stroke="#9B8EC4" stroke-width="3" stroke-linecap="round"
+            fill="none"/>
+
+      <!-- ── SLEEPY ZZZ ─────────────────────────────────── -->
+      <g id="zzz" style="opacity:0; transition: opacity .3s;">
+        <text x="148" y="88" font-size="13" font-weight="800" fill="#9B8EC4" font-family="system-ui">z</text>
+        <text x="158" y="78" font-size="10" font-weight="800" fill="#9B8EC4" font-family="system-ui" opacity=".7">z</text>
+        <text x="166" y="70" font-size="8"  font-weight="800" fill="#9B8EC4" font-family="system-ui" opacity=".4">z</text>
+      </g>
+
+      <!-- ── HALF-CLOSED EYES for sleepy ───────────────── -->
+      <g id="sleepy-lids" style="opacity:0; transition: opacity .3s; pointer-events:none;">
+        <!-- tapa mitad superior del ojo izq -->
+        <rect x="70" y="86" width="36" height="18" fill="#FF6B35" rx="2"/>
+        <!-- tapa mitad superior del ojo der -->
+        <rect x="114" y="86" width="36" height="18" fill="#FF6B35" rx="2"/>
+      </g>
+
+    </g><!-- /body-group -->
+  </svg>
+</div>
+
+<!-- ── PANEL DE CONTROL ────────────────────────────────────── -->
+<div class="panel">
+  <div class="panel-label">Estado</div>
+  <div class="btn-row">
+    <button class="btn btn--happy"   onclick="setState('happy')">😊 Feliz</button>
+    <button class="btn btn--sad"     onclick="setState('sad')">😢 Triste</button>
+    <button class="btn btn--excited" onclick="setState('excited')">🤩 Excited</button>
+    <button class="btn btn--sleepy"  onclick="setState('sleepy')">😴 Sleepy</button>
+  </div>
+  <div class="panel-label" style="margin-top:4px;">Acciones</div>
+  <div class="btn-row">
+    <button class="btn btn--wave" onclick="doWave()">👋 Saludar</button>
+    <button class="btn btn--jump" onclick="doJump()">🚀 Saltar</button>
+  </div>
+</div>
+
+<div class="hint">
+  💡 Tip: hacé click en la mascota para que salte<br>
+  Mové el cursor cerca para que te mire
+</div>
+
+<script>
+  /* ─── REFS ─────────────────────────────────────────────── */
+  const svg        = document.getElementById('mascot-svg');
+  const bodyGrp    = document.getElementById('body-group');
+  const shadow     = document.getElementById('shadow');
+  const blinkL     = document.getElementById('blink-l');
+  const blinkR     = document.getElementById('blink-r');
+  const pupilL     = document.getElementById('pupil-l');
+  const pupilR     = document.getElementById('pupil-r');
+  const armL       = document.getElementById('arm-left');
+  const armR       = document.getElementById('arm-right');
+  const bubble     = document.getElementById('bubble');
+  const cheekL     = document.getElementById('cheek-l');
+  const cheekR     = document.getElementById('cheek-r');
+  const zzz        = document.getElementById('zzz');
+  const sleepyLids = document.getElementById('sleepy-lids');
+
+  const mouths = {
+    happy:     document.getElementById('mouth-happy'),
+    sad:       document.getElementById('mouth-sad'),
+    surprised: document.getElementById('mouth-surprised'),
+    excited:   document.getElementById('mouth-excited'),
+    sleepy:    document.getElementById('mouth-sleepy'),
+  };
+  // extra el de teeth (comparte estado con excited)
+  const teethLine = document.getElementById('teeth-line');
+
+  /* ─── STATE ─────────────────────────────────────────────── */
+  let currentState = 'happy';
+  let isJumping    = false;
+
+  /* ─── SHOW MOUTH ─────────────────────────────────────────── */
+  function showMouth(name) {
+    Object.keys(mouths).forEach(k => mouths[k].classList.remove('active'));
+    if (mouths[name]) mouths[name].classList.add('active');
+    // teeth acompañan a excited
+    teethLine.classList.toggle('active', name === 'excited');
+  }
+
+  /* ─── SET STATE ──────────────────────────────────────────── */
+  const bubbleTexts = {
+    happy:    '¡Hola! 😊',
+    sad:      'Me da tristeza... 😢',
+    excited:  '¡WOOOO! 🎉',
+    sleepy:   'zzz... 😴',
+  };
+
+  const cheekColors = {
+    happy:   '#FF9580',
+    sad:     '#9BAAF0',
+    excited: '#FFD93D',
+    sleepy:  '#C4B5E8',
+  };
+
+  function setState(state) {
+    currentState = state;
+    showMouth(state);
+
+    // Cheeks color
+    cheekL.setAttribute('fill', cheekColors[state] || '#FF9580');
+    cheekR.setAttribute('fill', cheekColors[state] || '#FF9580');
+
+    // Sleepy extras
+    const isSleepy = state === 'sleepy';
+    zzz.style.opacity        = isSleepy ? '1' : '0';
+    sleepyLids.style.opacity = isSleepy ? '1' : '0';
+
+    // Excited shake
+    if (state === 'excited') {
+      bodyGrp.classList.add('shake');
+      setTimeout(() => bodyGrp.classList.remove('shake'), 420);
+    }
+
+    // Bubble
+    showBubble(bubbleTexts[state] || '');
+  }
+
+  /* ─── BUBBLE ─────────────────────────────────────────────── */
+  let bubbleTimer = null;
+  function showBubble(text) {
+    clearTimeout(bubbleTimer);
+    bubble.textContent = text;
+    bubble.classList.add('visible');
+    bubbleTimer = setTimeout(() => bubble.classList.remove('visible'), 2400);
+  }
+
+  /* ─── BLINK ──────────────────────────────────────────────── */
+  function doBlink() {
+    if (currentState === 'sleepy') return; // ya tiene ojos semi-cerrados
+    svg.classList.add('blinking');
+    setTimeout(() => svg.classList.remove('blinking'), 130);
+    // siguiente parpadeo aleatorio
+    setTimeout(doBlink, 2000 + Math.random() * 3500);
+  }
+  // Arrancar con delay inicial
+  setTimeout(doBlink, 1200 + Math.random() * 1200);
+
+  /* ─── PUPILS SIGUEN EL CURSOR ────────────────────────────── */
+  // Centros de los ojos en coordenadas del viewBox (0 0 220 220)
+  const eyeCenters = {
+    l: { x: 88, y: 105 },
+    r: { x: 132, y: 105 },
+  };
+  const MAX_OFFSET = 4; // px máx en el viewBox
+
+  document.addEventListener('mousemove', e => {
+    const rect  = svg.getBoundingClientRect();
+    // ratio de posición del cursor relativo al SVG
+    const rx    = (e.clientX - rect.left)  / rect.width;
+    const ry    = (e.clientY - rect.top)   / rect.height;
+    // convertir a coords del viewBox
+    const mx    = rx * 220;
+    const my    = ry * 220;
+
+    ['l','r'].forEach(side => {
+      const cx = eyeCenters[side].x;
+      const cy = eyeCenters[side].y;
+      const dx = mx - cx;
+      const dy = my - cy;
+      const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+      const ox = (dx / dist) * Math.min(MAX_OFFSET, dist * 0.15);
+      const oy = (dy / dist) * Math.min(MAX_OFFSET, dist * 0.15);
+      const el = side === 'l' ? pupilL : pupilR;
+      el.setAttribute('transform', `translate(${ox.toFixed(2)},${oy.toFixed(2)})`);
+    });
+  });
+
+  // Resetear cuando el cursor sale de la ventana
+  document.addEventListener('mouseleave', () => {
+    pupilL.setAttribute('transform', 'translate(0,0)');
+    pupilR.setAttribute('transform', 'translate(0,0)');
+  });
+
+  /* ─── WAVE ───────────────────────────────────────────────── */
+  function doWave() {
+    armL.classList.remove('waving');
+    armR.classList.remove('waving');
+    void armL.offsetWidth; // reflow para reiniciar animación
+    void armR.offsetWidth;
+    armL.classList.add('waving');
+    armR.classList.add('waving');
+    showBubble('¡Hola! 👋');
+    setTimeout(() => {
+      armL.classList.remove('waving');
+      armR.classList.remove('waving');
+    }, 1520);
+  }
+
+  /* ─── JUMP ───────────────────────────────────────────────── */
+  function doJump() {
+    if (isJumping) return;
+    isJumping = true;
+
+    // Guardar estado actual de boca y cambiar a surprised
+    const prev = currentState;
+    showMouth('surprised');
+
+    // Pausar idle, aplicar jump
+    bodyGrp.classList.add('jumping');
+    shadow.classList.add('jumping');
+    bodyGrp.classList.add('jump-anim');
+    shadow.classList.add('shadow-jump');
+
+    setTimeout(() => {
+      bodyGrp.classList.remove('jumping', 'jump-anim');
+      shadow.classList.remove('jumping', 'shadow-jump');
+      // Restaurar boca
+      showMouth(prev);
+      isJumping = false;
+    }, 580);
+
+    showBubble('¡Wee! 🚀');
+  }
+
+  /* ─── CLICK en la mascota ────────────────────────────────── */
+  svg.addEventListener('click', () => {
+    if (!isJumping) doJump();
+  });
+
+  /* ─── INIT ───────────────────────────────────────────────── */
+  showMouth('happy');
+  // Burbuja de bienvenida
+  setTimeout(() => showBubble('¡Hola! 😊'), 500);
+</script>
+</body>
+</html>
