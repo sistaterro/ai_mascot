@@ -13,31 +13,31 @@
   const TEMPLATE = `<div class="mascot-widget__stage">
 
   <!-- Speech bubble -->
-  <div class="mascot-widget__bubble" id="bubble">Hello! 👋</div>
+  <div class="mascot-widget__bubble" data-mascot-part="bubble">Hello! 👋</div>
 
   <!-- ── SVG MASCOT ─────────────────────────────────────── -->
-  <svg id="mascot-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+  <svg data-mascot-part="mascot-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
 
     <!-- SHADOW -->
-    <ellipse id="shadow" cx="110" cy="214" rx="44" ry="9" fill="#334155"/>
+    <ellipse data-mascot-part="shadow" cx="110" cy="214" rx="44" ry="9" fill="#334155"/>
 
     <!-- BODY GROUP — everything that bounces -->
-    <g id="body-group">
+    <g data-mascot-part="body-group">
 
       <!-- ── EARS (behind the body) -->
-      <g id="ear-left">
+      <g data-mascot-part="ear-left">
         <!-- left ear: rounded tip -->
         <ellipse cx="71" cy="68" rx="18" ry="24" fill="#FF6B35" transform="rotate(-10 71 68)"/>
         <ellipse cx="71" cy="70" rx="11" ry="16" fill="#FF8C5A" transform="rotate(-10 71 70)"/>
       </g>
-      <g id="ear-right">
+      <g data-mascot-part="ear-right">
         <ellipse cx="149" cy="68" rx="18" ry="24" fill="#FF6B35" transform="rotate(10 149 68)"/>
         <ellipse cx="149" cy="70" rx="11" ry="16" fill="#FF8C5A" transform="rotate(10 149 70)"/>
       </g>
 
       <!-- ── ARMS ──────────────────────────────────────── -->
       <!-- Left arm -- rotation origin at 72,138 -->
-      <g id="arm-left">
+      <g data-mascot-part="arm-left">
         <ellipse cx="72" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(-20 72 148)"/>
         <!-- small hand -->
         <circle cx="62" cy="155" r="9" fill="#FF6B35"/>
@@ -46,7 +46,7 @@
         <circle cx="61" cy="162" r="5" fill="#FF8C5A"/>
       </g>
       <!-- Right arm -->
-      <g id="arm-right">
+      <g data-mascot-part="arm-right">
         <ellipse cx="148" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(20 148 148)"/>
         <circle cx="158" cy="155" r="9" fill="#FF6B35"/>
         <circle cx="164" cy="151" r="5" fill="#FF8C5A"/>
@@ -61,38 +61,38 @@
       <circle cx="110" cy="108" r="58" fill="#FF6B35"/>
 
       <!-- ── CHEEKS ─────────────────────────────────────── -->
-      <ellipse id="cheek-l" cx="74"  cy="118" rx="13" ry="9"  fill="#FF9580" opacity=".6"/>
-      <ellipse id="cheek-r" cx="146" cy="118" rx="13" ry="9"  fill="#FF9580" opacity=".6"/>
+      <ellipse data-mascot-part="cheek-l" cx="74"  cy="118" rx="13" ry="9"  fill="#FF9580" opacity=".6"/>
+      <ellipse data-mascot-part="cheek-r" cx="146" cy="118" rx="13" ry="9"  fill="#FF9580" opacity=".6"/>
 
       <!-- ── BELLY patch ──────────────────────────────── -->
       <ellipse cx="110" cy="160" rx="35" ry="30" fill="#FF8C5A" opacity=".55"/>
 
       <!-- ── EYE LEFT ───────────────────────────────────── -->
-      <g id="eye-l">
+      <g data-mascot-part="eye-l">
         <!-- eye white -->
         <ellipse cx="88"  cy="105" rx="18" ry="20" fill="white"/>
         <!-- pupil -->
-        <g id="pupil-l">
+        <g data-mascot-part="pupil-l">
           <circle cx="88" cy="106" r="11" fill="#1E293B"/>
-          <!-- brillo -->
+          <!-- highlight -->
           <circle cx="93" cy="101" r="4"  fill="white"/>
           <circle cx="84" cy="109" r="2"  fill="white" opacity=".5"/>
         </g>
         <!-- eyelid -- covers the eye while blinking -->
-        <g id="blink-l" style="transform-origin: 88px 96px;">
+        <g data-mascot-part="blink-l" style="transform-origin: 88px 96px;">
           <ellipse cx="88" cy="105" rx="18.5" ry="20.5" fill="#FF6B35"/>
         </g>
       </g>
 
       <!-- ── EYE RIGHT ──────────────────────────────────── -->
-      <g id="eye-r">
+      <g data-mascot-part="eye-r">
         <ellipse cx="132" cy="105" rx="18" ry="20" fill="white"/>
-        <g id="pupil-r">
+        <g data-mascot-part="pupil-r">
           <circle cx="132" cy="106" r="11" fill="#1E293B"/>
           <circle cx="137" cy="101" r="4"  fill="white"/>
           <circle cx="128" cy="109" r="2"  fill="white" opacity=".5"/>
         </g>
-        <g id="blink-r" style="transform-origin: 132px 96px;">
+        <g data-mascot-part="blink-r" style="transform-origin: 132px 96px;">
           <ellipse cx="132" cy="105" rx="18.5" ry="20.5" fill="#FF6B35"/>
         </g>
       </g>
@@ -102,47 +102,47 @@
 
       <!-- ── MOUTHS (one visible at a time) ─────────────── -->
       <!-- happy (default) -->
-      <path id="mouth-happy" class="mouth-path active"
+      <path data-mascot-part="mouth-happy" class="mouth-path active"
             d="M 93 132 Q 110 148 127 132"
             stroke="#CC4400" stroke-width="3.5" stroke-linecap="round"
             fill="none" opacity=".7"/>
 
       <!-- sad -->
-      <path id="mouth-sad" class="mouth-path"
+      <path data-mascot-part="mouth-sad" class="mouth-path"
             d="M 93 142 Q 110 130 127 142"
             stroke="#6B8CFF" stroke-width="3.5" stroke-linecap="round"
             fill="none"/>
 
       <!-- surprised — "O" -->
-      <ellipse id="mouth-surprised" class="mouth-path"
+      <ellipse data-mascot-part="mouth-surprised" class="mouth-path"
                cx="110" cy="136" rx="10" ry="12"
                fill="#CC4400" opacity=".5"/>
 
       <!-- excited — big grin with teeth -->
-      <path id="mouth-excited" class="mouth-path"
+      <path data-mascot-part="mouth-excited" class="mouth-path"
             d="M 88 130 Q 110 152 132 130"
             stroke="#CC4400" stroke-width="3.5" stroke-linecap="round"
             fill="none" opacity=".7"/>
       <!-- teeth line -->
-      <line id="teeth-line" class="mouth-path"
+      <line data-mascot-part="teeth-line" class="mouth-path"
             x1="97" y1="135" x2="123" y2="135"
             stroke="#CC4400" stroke-width="2" opacity=".4"/>
 
       <!-- sleepy — flat line + zzz -->
-      <path id="mouth-sleepy" class="mouth-path"
+      <path data-mascot-part="mouth-sleepy" class="mouth-path"
             d="M 98 136 Q 110 138 122 136"
             stroke="#9B8EC4" stroke-width="3" stroke-linecap="round"
             fill="none"/>
 
       <!-- ── SLEEPY ZZZ ─────────────────────────────────── -->
-      <g id="zzz" style="opacity:0; transition: opacity .3s;">
+      <g data-mascot-part="zzz" style="opacity:0; transition: opacity .3s;">
         <text x="148" y="88" font-size="13" font-weight="800" fill="#9B8EC4" font-family="system-ui">z</text>
         <text x="158" y="78" font-size="10" font-weight="800" fill="#9B8EC4" font-family="system-ui" opacity=".7">z</text>
         <text x="166" y="70" font-size="8"  font-weight="800" fill="#9B8EC4" font-family="system-ui" opacity=".4">z</text>
       </g>
 
       <!-- ── HALF-CLOSED EYES for sleepy ───────────────── -->
-      <g id="sleepy-lids" style="opacity:0; transition: opacity .3s; pointer-events:none;">
+      <g data-mascot-part="sleepy-lids" style="opacity:0; transition: opacity .3s; pointer-events:none;">
         <!-- cover upper half of the left eye -->
         <rect x="70" y="86" width="36" height="18" fill="#FF6B35" rx="2"/>
         <!-- cover upper half of the right eye -->
@@ -167,7 +167,7 @@
   }
 
   /* ── SVG mascot wrapper ───────────────────────────────── */
-.mascot-widget #mascot-svg {
+.mascot-widget [data-mascot-part="mascot-svg"] {
     width: 220px;
     height: 220px;
     cursor: pointer;
@@ -175,7 +175,7 @@
   }
 
   /* ── IDLE BOUNCE (full body) ───────────────────── */
-.mascot-widget #body-group {
+.mascot-widget [data-mascot-part="body-group"] {
     animation: mascot-idle-bounce 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
     transform-origin: 110px 200px;
   }
@@ -188,12 +188,12 @@
   }
 
   /* When jumping, the animation pauses and JS takes control */
-.mascot-widget #body-group.jumping {
+.mascot-widget [data-mascot-part="body-group"].jumping {
     animation: none;
   }
 
   /* ── SHADOW ───────────────────────────────────────────── */
-.mascot-widget #shadow {
+.mascot-widget [data-mascot-part="shadow"] {
     animation: mascot-idle-shadow 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
     transform-origin: 110px 216px;
   }
@@ -204,14 +204,14 @@
     55%      { transform: scaleX(.65); opacity: .12; }
     85%      { transform: scaleX(1.1); opacity: .3;  }
   }
-.mascot-widget #shadow.jumping { animation: none; }
+.mascot-widget [data-mascot-part="shadow"].jumping { animation: none; }
 
   /* ── ARMS ────────────────────────────────────────────── */
-.mascot-widget #arm-left {
+.mascot-widget [data-mascot-part="arm-left"] {
     transform-origin: 72px 138px;
     animation: mascot-arm-idle-l 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
   }
-.mascot-widget #arm-right {
+.mascot-widget [data-mascot-part="arm-right"] {
     transform-origin: 148px 138px;
     animation: mascot-arm-idle-r 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
   }
@@ -225,11 +225,11 @@
     50%      { transform: rotate(8deg);   }
   }
 
-  /* Wave — aplicado como clase desde JS */
-.mascot-widget #arm-left.waving {
+  /* Wave, applied as a class from JS */
+.mascot-widget [data-mascot-part="arm-left"].waving {
     animation: mascot-wave-l .5s ease-in-out 3;
   }
-.mascot-widget #arm-right.waving {
+.mascot-widget [data-mascot-part="arm-right"].waving {
     animation: mascot-wave-r .5s ease-in-out 3;
   }
 
@@ -243,16 +243,16 @@
   }
 
   /* ── EARS (wiggle on hover) ──────────────────────────── */
-.mascot-widget #ear-left {
+.mascot-widget [data-mascot-part="ear-left"] {
     transform-origin: 72px 70px;
     transition: transform .2s;
   }
-.mascot-widget #ear-right {
+.mascot-widget [data-mascot-part="ear-right"] {
     transform-origin: 148px 70px;
     transition: transform .2s;
   }
-.mascot-widget #mascot-svg:hover #ear-left  { animation: mascot-ear-wiggle-l .4s ease-in-out 2; }
-.mascot-widget #mascot-svg:hover #ear-right { animation: mascot-ear-wiggle-r .4s ease-in-out 2; }
+.mascot-widget [data-mascot-part="mascot-svg"]:hover [data-mascot-part="ear-left"]  { animation: mascot-ear-wiggle-l .4s ease-in-out 2; }
+.mascot-widget [data-mascot-part="mascot-svg"]:hover [data-mascot-part="ear-right"] { animation: mascot-ear-wiggle-r .4s ease-in-out 2; }
 
   @keyframes mascot-ear-wiggle-l {
     0%,100% { transform: rotate(0deg);  }
@@ -264,18 +264,18 @@
   }
 
   /* ── BLINK ───────────────────────────────────────────── */
-.mascot-widget #blink-l, .mascot-widget #blink-r {
+.mascot-widget [data-mascot-part="blink-l"], .mascot-widget [data-mascot-part="blink-r"] {
     transform-origin: center;
     transform: scaleY(0);
     transition: transform .06s ease-in;
   }
-.mascot-widget .blinking #blink-l,
-.mascot-widget .blinking #blink-r {
+.mascot-widget .blinking [data-mascot-part="blink-l"],
+.mascot-widget .blinking [data-mascot-part="blink-r"] {
     transform: scaleY(1);
   }
 
   /* ── PUPILS ──────────────────────────────────────────── */
-.mascot-widget #pupil-l, .mascot-widget #pupil-r {
+.mascot-widget [data-mascot-part="pupil-l"], .mascot-widget [data-mascot-part="pupil-r"] {
     transition: transform .12s ease-out;
   }
 
@@ -288,7 +288,7 @@
 .mascot-widget .mouth-path.active   { opacity: 1; }
 
   /* ── CHEEKS ──────────────────────────────────────────── */
-.mascot-widget #cheek-l, .mascot-widget #cheek-r {
+.mascot-widget [data-mascot-part="cheek-l"], .mascot-widget [data-mascot-part="cheek-r"] {
     transition: opacity .3s;
   }
 
@@ -513,25 +513,25 @@
       this.target.appendChild(this.root);
 
       const find = selector => this.root.querySelector(selector);
-      this.svg = find('#mascot-svg');
-      this.bodyGroup = find('#body-group');
-      this.shadow = find('#shadow');
-      this.pupilL = find('#pupil-l');
-      this.pupilR = find('#pupil-r');
-      this.armL = find('#arm-left');
-      this.armR = find('#arm-right');
-      this.bubble = find('.mascot-widget__bubble');
-      this.cheekL = find('#cheek-l');
-      this.cheekR = find('#cheek-r');
-      this.zzz = find('#zzz');
-      this.sleepyLids = find('#sleepy-lids');
-      this.teethLine = find('#teeth-line');
+      this.svg = find('[data-mascot-part="mascot-svg"]');
+      this.bodyGroup = find('[data-mascot-part="body-group"]');
+      this.shadow = find('[data-mascot-part="shadow"]');
+      this.pupilL = find('[data-mascot-part="pupil-l"]');
+      this.pupilR = find('[data-mascot-part="pupil-r"]');
+      this.armL = find('[data-mascot-part="arm-left"]');
+      this.armR = find('[data-mascot-part="arm-right"]');
+      this.bubble = find('[data-mascot-part="bubble"]');
+      this.cheekL = find('[data-mascot-part="cheek-l"]');
+      this.cheekR = find('[data-mascot-part="cheek-r"]');
+      this.zzz = find('[data-mascot-part="zzz"]');
+      this.sleepyLids = find('[data-mascot-part="sleepy-lids"]');
+      this.teethLine = find('[data-mascot-part="teeth-line"]');
       this.mouths = {
-        happy: find('#mouth-happy'),
-        sad: find('#mouth-sad'),
-        surprised: find('#mouth-surprised'),
-        excited: find('#mouth-excited'),
-        sleepy: find('#mouth-sleepy'),
+        happy: find('[data-mascot-part="mouth-happy"]'),
+        sad: find('[data-mascot-part="mouth-sad"]'),
+        surprised: find('[data-mascot-part="mouth-surprised"]'),
+        excited: find('[data-mascot-part="mouth-excited"]'),
+        sleepy: find('[data-mascot-part="mouth-sleepy"]'),
       };
     }
 
