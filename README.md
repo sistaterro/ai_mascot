@@ -140,6 +140,8 @@ Actions:
 
 For example, the mascot should be able to remain in `thinking` while briefly performing `wave`, then return to its previous visual state.
 
+Visual polish matters for the mascot API: `sleepy` uses curved eyelids that match the oval eyes, and `wave` uses clearly visible arms and hands so the action reads at small sizes.
+
 ## Current State
 
 - `mascot-widget.js` is the first embeddable widget build. It injects the mascot markup, scoped styles, and behavior from one script.
@@ -148,7 +150,7 @@ For example, the mascot should be able to remain in `thinking` while briefly per
 - `examples/chatbot-host.html` shows the widget inside a regular chatbot-like host page.
 - `tests/browser-smoke.html` is a browser-run smoke test for mounting, API calls, multi-instance behavior, and cleanup.
 - `examples/legacy-prototype.html` keeps the old self-contained prototype shape for historical comparison.
-- The next major step is hardening the widget API and improving configurability.
+- The next major step is continuing to harden the widget API and visual states.
 
 ## Suggested Milestones
 

@@ -36,22 +36,22 @@
       </g>
 
       <!-- ── ARMS ──────────────────────────────────────── -->
-      <!-- Left arm -- rotation origin at 72,138 -->
+      <!-- Left arm -- rotation origin at 74,144 -->
       <g data-mascot-part="arm-left">
-        <ellipse cx="72" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(-20 72 148)"/>
+        <ellipse cx="61" cy="148" rx="17" ry="10" fill="#FF6B35" transform="rotate(-25 61 148)"/>
         <!-- small hand -->
-        <circle cx="62" cy="155" r="9" fill="#FF6B35"/>
-        <circle cx="56" cy="151" r="5" fill="#FF8C5A"/>
-        <circle cx="55" cy="158" r="5" fill="#FF8C5A"/>
-        <circle cx="61" cy="162" r="5" fill="#FF8C5A"/>
+        <circle cx="48" cy="151" r="10" fill="#FF6B35"/>
+        <circle cx="41" cy="146" r="5" fill="#FF8C5A"/>
+        <circle cx="39" cy="154" r="5" fill="#FF8C5A"/>
+        <circle cx="45" cy="161" r="5" fill="#FF8C5A"/>
       </g>
       <!-- Right arm -->
       <g data-mascot-part="arm-right">
-        <ellipse cx="148" cy="148" rx="14" ry="10" fill="#FF6B35" transform="rotate(20 148 148)"/>
-        <circle cx="158" cy="155" r="9" fill="#FF6B35"/>
-        <circle cx="164" cy="151" r="5" fill="#FF8C5A"/>
-        <circle cx="165" cy="158" r="5" fill="#FF8C5A"/>
-        <circle cx="159" cy="162" r="5" fill="#FF8C5A"/>
+        <ellipse cx="159" cy="148" rx="17" ry="10" fill="#FF6B35" transform="rotate(25 159 148)"/>
+        <circle cx="172" cy="151" r="10" fill="#FF6B35"/>
+        <circle cx="179" cy="146" r="5" fill="#FF8C5A"/>
+        <circle cx="181" cy="154" r="5" fill="#FF8C5A"/>
+        <circle cx="175" cy="161" r="5" fill="#FF8C5A"/>
       </g>
 
       <!-- ── BODY (main body) ────────────────────── -->
@@ -143,10 +143,11 @@
 
       <!-- ── HALF-CLOSED EYES for sleepy ───────────────── -->
       <g data-mascot-part="sleepy-lids" style="opacity:0; transition: opacity .3s; pointer-events:none;">
-        <!-- cover upper half of the left eye -->
-        <rect x="70" y="86" width="36" height="18" fill="#FF6B35" rx="2"/>
-        <!-- cover upper half of the right eye -->
-        <rect x="114" y="86" width="36" height="18" fill="#FF6B35" rx="2"/>
+        <!-- curved upper lids that match the oval eyes -->
+        <path d="M 69 88 C 73 77 103 77 107 88 L 107 106 C 98 112 78 112 69 106 Z" fill="#FF6B35"/>
+        <path d="M 113 88 C 117 77 147 77 151 88 L 151 106 C 142 112 122 112 113 106 Z" fill="#FF6B35"/>
+        <path d="M 75 108 Q 88 113 101 108" stroke="#CC4400" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".45"/>
+        <path d="M 119 108 Q 132 113 145 108" stroke="#CC4400" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".45"/>
       </g>
 
     </g><!-- /body-group -->
@@ -209,21 +210,21 @@
 
   /* ── ARMS ────────────────────────────────────────────── */
 .mascot-widget [data-mascot-part="arm-left"] {
-    transform-origin: 72px 138px;
+    transform-origin: 74px 144px;
     animation: mascot-arm-idle-l 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
   }
 .mascot-widget [data-mascot-part="arm-right"] {
-    transform-origin: 148px 138px;
+    transform-origin: 146px 144px;
     animation: mascot-arm-idle-r 2.2s cubic-bezier(.45,.05,.55,.95) infinite;
   }
 
   @keyframes mascot-arm-idle-l {
     0%,100% { transform: rotate(0deg);   }
-    50%      { transform: rotate(-8deg);  }
+    50%      { transform: rotate(6deg);  }
   }
   @keyframes mascot-arm-idle-r {
     0%,100% { transform: rotate(0deg);   }
-    50%      { transform: rotate(8deg);   }
+    50%      { transform: rotate(-6deg);   }
   }
 
   /* Wave, applied as a class from JS */
@@ -236,11 +237,11 @@
 
   @keyframes mascot-wave-l {
     0%,100% { transform: rotate(0deg);   }
-    50%      { transform: rotate(-35deg); }
+    50%      { transform: rotate(42deg); }
   }
   @keyframes mascot-wave-r {
     0%,100% { transform: rotate(0deg);   }
-    50%      { transform: rotate(35deg);  }
+    50%      { transform: rotate(-72deg);  }
   }
 
   /* ── EARS (wiggle on hover) ──────────────────────────── */

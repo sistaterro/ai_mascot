@@ -85,6 +85,8 @@ Temporary actions include:
 
 Actions should not permanently overwrite the current mood. For example, `jump()` may briefly show a surprised mouth, but it should restore the previous mood afterward.
 
+Visual states should remain readable at small widget sizes. Preserve the curved sleepy eyelids and the clearly visible wave gesture unless replacing them with a better-tested visual treatment.
+
 ## Near-Term Task List
 
 1. Review and harden `mascot-widget.js`.
